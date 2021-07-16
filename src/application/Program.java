@@ -1,0 +1,54 @@
+package application;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Scanner;
+
+import model.entities.Reservation;
+import model.exceptions.DomainExceptions;
+
+public class Program {
+
+	public static void main(String[] args) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Locale.setDefault(Locale.US);
+		Scanner sc = new Scanner(System.in);
+		
+		try {
+		System.out.print("Room number: ");
+		Integer number = sc.nextInt();
+		System.out.print("Check-in date (dd/MM/yyyy): ");
+		Date checkIn = sdf.parse(sc.next());
+		System.out.print("Check-OUT date (dd/MM/yyyy): ");
+		Date checkOut = sdf.parse(sc.next());
+		
+		Reservation reservation = new Reservation(number, checkIn, checkOut);
+		
+		System.out.println("Enter data to update the reservation:");
+		System.out.println("Reservation: " + reservation);
+		
+		System.out.print("\nCheck-in date (dd/MM/yyyy):");
+		checkIn = sdf.parse(sc.next());
+		System.out.print("Check-out date (dd/MM/yyyy): ");
+		checkOut = sdf.parse(sc.next());
+		
+		reservation.updateDates(checkIn, checkOut);
+		System.out.println("Reservation updated: " + reservation);
+		}
+		catch (ParseException e) {
+			System.out.println("Invalid date format.");
+		}
+		catch(DomainExceptions e) {
+			System.out.println("Error in reservation: " + e.getMessage());
+		}
+		catch(RuntimeException e) {
+			System.out.println("Unexpected error");
+		}
+		
+		
+		sc.close();
+	}
+}
